@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Comparison: {{ city1 }} vs {{ city2 }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .compare-container {
+      display: flex;
+      flex-direction: row;
+      height: 90vh;
+      overflow: hidden;
+    }
+
+    .left-half, .right-half {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    .left-half {
+      background-color: #f9f9f9;
+      border-right: 1px solid #ddd;
+    }
+
+    .right-half {
+      background-color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .compare-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .left-half, .right-half {
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('index') }}">Cost of Living</a>
+  </div>
+</nav>
+
+<div class="compare-container">
+  <!-- Left: Table -->
+  <div class="left-half">
+    <h3 class="text-center mb-4">{{ city1 }} vs {{ city2 }}</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Metric</th>
+            <th>{{ city1 }}</th>
+            <th>{{ city2 }}</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in comparison %}
+            <tr>
+              <td>{{ item.metric }}</td>
+              <td>{{ item.value1 }}</td>
+              <td>{{ item.value2 }}</td>
+              <td>{{ item.diff }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Right: Chart -->
+  <div class="right-half">
+    <h4 class="text-center mb-4">Top 10 Category Comparison</h4>
+    <canvas id="costChart" width="100%" height="100%"></canvas>
+  </div>
+</div>
+
+<script>
+  const labelsData = {{ comparison[:10] | map(attribute='metric') | list | tojson }};
+  const city1Data = {{ comparison[:10] | map(attribute='value1') | list | tojson }};
+  const city2Data = {{ comparison[:10] | map(attribute='value2') | list | tojson }};
+
+  new Chart(document.getElementById('costChart'), {
+    type: 'bar',
+    data: {
+      labels: labelsData,
+      datasets: [
+        {
+          label: '{{ city1 }}',
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          data: city1Data.map(v => parseFloat(v) || 0)
+        },
+        {
+          label: '{{ city2 }}',
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          data: city2Data.map(v => parseFloat(v) || 0)
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

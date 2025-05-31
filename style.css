@@ -1,0 +1,29 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+}
+
+.hero {
+  height: 90vh;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1585314062344-bd7b2da51b8e') no-repeat center center/cover;
+}
+
+.hero h1 {
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+.feature-img {
+  width: 80px;
+  height: 80px;
+}
+
+footer {
+  margin-top: 60px;
+}
