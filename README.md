@@ -1,5 +1,5 @@
 📝 Project Summary – Cost of Living Comparison Web App
-Cost of Living Comparison is a Flask-based web application that allows users to compare the cost of living between two cities using real data across 55 metrics. The tool presents information side-by-side in a user-friendly table and dynamic bar chart.
+- Cost of Living Comparison is a Flask-based web application that allows users to compare the cost of living between two cities using real data across 55 metrics. The tool presents information side-by-side in a user-friendly table and dynamic bar chart.
 
 🔑 Key Features:
 - Compare global cities using real cost-of-living data (CSV-based)
